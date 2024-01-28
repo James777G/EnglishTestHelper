@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/HanyiSentyJoy Regular.ttf",
+      "sha1": "36f823c4a1a3a424deb05b0e461abab1dea3e992"
+    },
+    {
+      "path": "assets/fonts/NotoSerifSC-Medium.ttf",
+      "sha1": "b89affeb54cd81d6c8bb56d977d7117aa9d70bd7"
+    }
+  ]
+}

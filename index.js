@@ -4,6 +4,6 @@
 
 import {AppRegistry} from 'react-native';
 import {name as appName} from './app.json';
-import StartPage from "./react/pages/App";
+import AppNavigation from "./react/router/AppNavigation";
 
-AppRegistry.registerComponent(appName, () => StartPage);
+AppRegistry.registerComponent(appName, () => AppNavigation);
