@@ -3,11 +3,13 @@ import { View, Image, StyleSheet, TouchableOpacity, Text, Dimensions } from 'rea
 import ImagePicker, { Image as ImageType } from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { uploadImages } from '../http/ImageUploadRequest.jsx'
+import {useNavigation} from "@react-navigation/native";
 
 
 const NextPage: React.FC = () => {
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
+    const navigation = useNavigation()
     const handleImagePicker = async () => {
         try {
             const response = await ImagePicker.openPicker({
@@ -28,8 +30,14 @@ const NextPage: React.FC = () => {
     };
 
     const handleUploadImages = async () => {
+        // @ts-ignore
+        navigation.navigate('ResultPage', {
+            result: ""
+        });
+
         try {
-            await uploadImages(selectedImages);
+            await uploadImages(selectedImages, navigation);
+
         } catch (error) {
             console.error('Error uploading images:', error);
         }

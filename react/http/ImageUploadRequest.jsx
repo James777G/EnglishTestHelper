@@ -1,9 +1,10 @@
 import axios from 'axios';
 import Config from '../config.json';
 
-const uploadImages = async (images) => {
-    console.log("processing images upload");
 
+const uploadImages = async (images, navigation) => {
+
+    console.log("processing images upload");
     try {
         if (images.length === 0) {
             console.log('No images to upload.');
@@ -20,7 +21,7 @@ const uploadImages = async (images) => {
             });
         });
 
-        const apiUrl = `https://${Config.server.ip}:${Config.server.port}/process_images`;
+        const apiUrl = `http://${Config.server.ip}:${Config.server.port}/process_images`;
 
         const response = await axios.post(apiUrl, formData, {
             headers: {
@@ -29,8 +30,13 @@ const uploadImages = async (images) => {
         });
 
         if (response.status === 200) {
+
+            navigation.navigate('ResultPage', {
+                result: response.data.result,
+            });
+
             console.log('Images uploaded successfully.');
-            console.log(response.data.result)
+            console.log(response.data.result);
         } else {
             console.error('Image upload failed.');
         }
