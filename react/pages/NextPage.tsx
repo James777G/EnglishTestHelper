@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Text, Dimensions, Alert} from 'react-native';
 import ImagePicker, { Image as ImageType } from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { uploadImages } from '../http/ImageUploadRequest.jsx'
 import {useNavigation} from "@react-navigation/native";
+import NetInfo from "@react-native-community/netinfo";
 
 
 const NextPage: React.FC = () => {
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
     const navigation = useNavigation()
+
     const handleImagePicker = async () => {
         try {
             const response = await ImagePicker.openPicker({
@@ -29,16 +31,30 @@ const NextPage: React.FC = () => {
         }
     };
 
+
     const handleUploadImages = async () => {
+        if (selectedImages.length === 0) {
+            Alert.alert('警告', '您必须至少选择一张图片');
+            return;
+        }
+
+        // Check network state
+        const isConnected = await NetInfo.fetch().then(state => state.isConnected);
+
+        if (!isConnected) {
+            Alert.alert('警告', '请检查您的网络状态， 您可能没有网络连接。');
+            return;
+        }
+
         // @ts-ignore
         navigation.navigate('ResultPage', {
-            result: ""
+            result: ''
         });
 
         try {
             await uploadImages(selectedImages, navigation);
-
         } catch (error) {
+            Alert.alert('警告', '上传图片时出错，请稍后重试');
             console.error('Error uploading images:', error);
         }
     };
